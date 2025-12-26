@@ -13,7 +13,7 @@ export class ApiResponse<T = unknown> {
     statusCode: number,
     message: string,
     data: T | null,
-    error: ApiResponse<T>["error"]
+    error: ApiResponse<T>['error'],
   ) {
     this.success = success;
     this.statusCode = statusCode;
@@ -23,11 +23,7 @@ export class ApiResponse<T = unknown> {
   }
 
   /** Success response */
-  static success<T>(
-    statusCode: number,
-    data: T,
-    message = "Success"
-  ): ApiResponse<T> {
+  static success<T>(statusCode: number, data: T, message = 'Success'): ApiResponse<T> {
     return new ApiResponse<T>(true, statusCode, message, data, null);
   }
 
@@ -35,8 +31,8 @@ export class ApiResponse<T = unknown> {
   static error(
     statusCode: number,
     message: string,
-    code = "INTERNAL_ERROR",
-    details?: unknown
+    code = 'INTERNAL_ERROR',
+    details?: unknown,
   ): ApiResponse<null> {
     return new ApiResponse(false, statusCode, message, null, { code, details });
   }

@@ -1,6 +1,5 @@
-import { ZodError } from "zod";
-import { ERROR_CODES } from "./errorCodes";
-
+import { ZodError } from 'zod';
+import { ERROR_CODES } from './errorCodes';
 
 export class AppError extends Error {
   public readonly statusCode: number;
@@ -11,8 +10,8 @@ export class AppError extends Error {
   constructor(
     message: string,
     statusCode = 500,
-    code: keyof typeof ERROR_CODES = "INTERNAL_ERROR",
-    details?: unknown
+    code: keyof typeof ERROR_CODES = 'INTERNAL_ERROR',
+    details?: unknown,
   ) {
     super(message);
 
@@ -27,12 +26,7 @@ export class AppError extends Error {
 
   /** Factory for Zod errors */
   static fromZod(error: ZodError): AppError {
-    return new AppError(
-      "Validation failed",
-      400,
-      "VALIDATION_ERROR",
-      AppError.flattenZod(error)
-    );
+    return new AppError('Validation failed', 400, 'VALIDATION_ERROR', AppError.flattenZod(error));
   }
 
   /** Zod → frontend-friendly format */
@@ -40,7 +34,7 @@ export class AppError extends Error {
     const result: Record<string, string[]> = {};
 
     for (const issue of error.issues) {
-      const path = issue.path.join(".") || "root";
+      const path = issue.path.join('.') || 'root';
 
       if (!result[path]) {
         result[path] = [];
