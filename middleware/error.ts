@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { AppError } from "../config/AppError";
 import { ApiResponse } from "../config/ApiResonce";
 import { ERROR_CODES } from "../config/errorCodes";
+import { ZodError } from "zod";
 
 export function errorHandler(
   err: unknown,
@@ -14,6 +15,20 @@ export function errorHandler(
       .status(err.statusCode)
       .json(
         ApiResponse.error(err.statusCode, err.message, err.code, err.details)
+      );
+  }
+
+  if (err instanceof ZodError) {
+    const appErr = AppError.fromZod(err);
+    return res
+      .status(appErr.statusCode)
+      .json(
+        ApiResponse.error(
+          appErr.statusCode,
+          appErr.message,
+          appErr.code,
+          appErr.details
+        )
       );
   }
 
